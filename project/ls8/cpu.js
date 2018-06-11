@@ -68,16 +68,22 @@ class CPU {
                 this.reg[regA] /= this.reg[regB];
                 break;
             case 'INC':
-                this.reg--;
+                this.reg[regA]++;
                 break;
             case 'DEC':
-                this.reg++;
+                this.reg[regA]--;
                 break;
             case 'CMP':
-            if(this.reg[regA] > this.reg[regB])
-            if(this.reg[regA] === this.reg[regB])
-            if(this.reg[regA] < this.reg[regB])
-             
+            if(this.reg[regA] > this.reg[regB]){
+                regA = "00000010";
+                // regB['L'] = 1;
+            } 
+            if(this.reg[regA] === this.reg[regB]){
+                regA = "00000001";
+            }
+            if(this.reg[regA] < this.reg[regB]){
+                regA = "00000100";
+            }
                 break;
                 default: 
                 this.hlt();
@@ -97,7 +103,7 @@ class CPU {
         
         const IR = this.ram.read(this.PC);
         // Debugging output
-        //console.log(`${this.PC}: ${IR.toString(2)}`);
+        // console.log(`${this.PC}: ${IR.toString(2)}`);
 
         // Get the two bytes in memory _after_ the PC in case the instruction
         // needs them.
@@ -117,18 +123,29 @@ class CPU {
             case 'AND': 
                this.reg[poo] = (poo & dung);  
                 break;
-            case 'CALL': 
-
-                break;
             case 'CMP':
-
+                this.alu('CMP', poo, dung);
+                break;
+            case 'DEC':
+                this.alu('DEC', poo);
+                break;
+            case 'DIV':
+                this.alu('DIV', poo, dung);
+                break;
+            case 'INC':
+                this.alu('INC', poo);
                 break;
             case 'LDI': 
                 this.reg[poo] = dung;
                 break;
+            case 'PRN':
+                console.log(this.reg[poo]);
+                break;
             case 'HLT':
                 this.stopClock();
                 break;
+                default:
+                    this.stopClock();
         }
 
         // Increment the PC register to go to the next instruction. Instructions
