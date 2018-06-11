@@ -103,7 +103,7 @@ class CPU {
         
         const IR = this.ram.read(this.PC);
         // Debugging output
-        // console.log(`${this.PC}: ${IR.toString(2)}`);
+        console.log(`${this.PC}: ${IR.toString(2)}`);
 
         // Get the two bytes in memory _after_ the PC in case the instruction
         // needs them.
@@ -144,8 +144,6 @@ class CPU {
             case 'HLT':
                 this.stopClock();
                 break;
-                default:
-                    this.stopClock();
         }
 
         // Increment the PC register to go to the next instruction. Instructions
@@ -153,7 +151,8 @@ class CPU {
         // instruction byte tells you how many bytes follow the instruction byte
         // for any particular instruction.
         
-        // !!! IMPLEMENT ME
+        // !ME!! IMPLEMENT 
+       this.PC++;
     }
 }
 
