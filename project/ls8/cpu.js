@@ -56,7 +56,31 @@ class CPU {
         switch (op) {
             case 'MUL':
                 // !!! IMPLEMENT ME
+                this.reg[regA] *= this.reg[regB];
                 break;
+            case 'ADD':
+                this.reg[regA] += this.reg[regB];
+                break;
+            case 'SUB': 
+                this.reg[regA] -= this.reg[regB];
+                break;
+            case 'DIV':
+                this.reg[regA] /= this.reg[regB];
+                break;
+            case 'INC':
+                this.reg--;
+                break;
+            case 'DEC':
+                this.reg++;
+                break;
+            case 'CMP':
+            if(this.reg[regA] > this.reg[regB])
+            if(this.reg[regA] === this.reg[regB])
+            if(this.reg[regA] < this.reg[regB])
+             
+                break;
+                default: 
+                this.hlt();
         }
     }
 
@@ -70,7 +94,8 @@ class CPU {
         // right now.)
 
         // !!! IMPLEMENT ME
-
+        
+        const IR = this.ram.read(this.PC);
         // Debugging output
         //console.log(`${this.PC}: ${IR.toString(2)}`);
 
@@ -78,11 +103,33 @@ class CPU {
         // needs them.
 
         // !!! IMPLEMENT ME
+        let poo = this.ram.read(this.PC + 1);
+        let dung = this.ram.read(this.PC + 2);
 
         // Execute the instruction. Perform the actions for the instruction as
         // outlined in the LS-8 spec.
 
         // !!! IMPLEMENT ME
+        switch(IR) {
+            case 'ADD': 
+                this.alu('ADD', poo, dung);
+                break;
+            case 'AND': 
+               this.reg[poo] = (poo & dung);  
+                break;
+            case 'CALL': 
+
+                break;
+            case 'CMP':
+
+                break;
+            case 'LDI': 
+                this.reg[poo] = dung;
+                break;
+            case 'HLT':
+                this.stopClock();
+                break;
+        }
 
         // Increment the PC register to go to the next instruction. Instructions
         // can be 1, 2, or 3 bytes long. Hint: the high 2 bits of the
