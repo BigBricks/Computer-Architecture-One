@@ -1,7 +1,10 @@
 /**
  * LS-8 v2.0 emulator skeleton code
  */
-
+const PRN = 0b01000011;
+const HLT = 0b00000001;
+const LDI = 0b10011001;
+const MUL = 0b10101010;
 /**
  * Class for simulating a simple Computer (CPU & memory)
  */
@@ -85,8 +88,7 @@ class CPU {
                 regA = "00000100";
             }
                 break;
-                default: 
-                this.hlt();
+
         }
     }
 
@@ -135,13 +137,16 @@ class CPU {
             case 'INC':
                 this.alu('INC', poo);
                 break;
-            case 'LDI': 
+            case MUL: 
+                this.alu('MUL', poo, dung);
+                break;
+            case LDI: 
                 this.reg[poo] = dung;
                 break;
-            case 'PRN':
+            case PRN:
                 console.log(this.reg[poo]);
                 break;
-            case 'HLT':
+            case HLT:
                 this.stopClock();
                 break;
         }
@@ -152,7 +157,7 @@ class CPU {
         // for any particular instruction.
         
         // !ME!! IMPLEMENT 
-       this.PC++;
+       this.PC += (IR >> 6) + 1;
     }
 }
 
