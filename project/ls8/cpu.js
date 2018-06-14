@@ -127,7 +127,11 @@ class CPU {
         // from the memory address pointed to by the PC. (I.e. the PC holds the
         // index into memory of the instruction that's about to be executed
         // right now.)
-
+        const popcorn = () => {
+           const kernel = this.ram.read(this.reg[SP]);
+            this.reg[SP]++;
+            return kernel;
+        }
         // !!! IMPLEMENT ME
         
         const IR = this.ram.read(this.PC);
@@ -156,8 +160,9 @@ class CPU {
                 this.alu('CMP', poo, dung);
                 break;
             case CALL:
-            this.ram.write(this.reg[SP], this.PC + 1);
-            this.PC = this.reg[poo];
+                this.reg[SP]--;
+                this.ram.write(this.reg[SP], this.PC + 2);
+                this.PC = this.reg[poo];
             break;
             case RET:
                 this.PC = this.ram.read(this.reg[SP]);
@@ -189,6 +194,23 @@ class CPU {
             this.reg[poo] = this.reg[SP];
             this.reg[SP]--;
             break;
+            case PRA: 
+            console.log(String.fromCharCode(this.reg[poo]));
+            break;
+            case IRET:
+            for(let i = 6; i >= 0; i--) {
+                this.reg[i] = this.reg[SP];
+                this.reg[SP]--;
+            }
+                this.PC = this.reg[SP];
+                this.reg[SP]--;
+            break;
+            case JMP:
+            this.PC = this.reg[poo];
+            break;
+            case ST:
+            this.poke(poo, dung);
+            break;
             case HLT:
                 this.stopClock();
                 break;
@@ -200,7 +222,9 @@ class CPU {
         // for any particular instruction.
         
         // !ME!! IMPLEMENT 
+        if(IR != CALL && IR != RET && IR != JMP){
        this.PC += (IR >> 6) + 1;
+        }
     }
 }
 
